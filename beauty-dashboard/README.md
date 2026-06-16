@@ -1,58 +1,72 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AuraBeauty BI Console
+**Market Basket Analysis & Overstock Management System**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![AuraBeauty](https://img.shields.io/badge/AuraBeauty-Business_Intelligence-3B82F6?style=for-the-badge)
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel)
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python)
 
-## About Laravel
+A powerful Business Intelligence dashboard built to solve inventory stagnation and discover natural product purchasing patterns. This system applies the **Apriori Machine Learning Algorithm** to thousands of transactional records to generate highly accurate product bundling recommendations.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+*   **Algorithmic Discovery**: Uses Apriori to extract frequent itemsets (2, 3, or 4 products) from massive transaction datasets.
+*   **Overstock Cure**: Automatically cross-references stagnant inventory (overstock) with high-affinity product associations to suggest profitable, data-backed clearance bundles.
+*   **Flat Design UI**: Built with a strict, highly-legible **Flat Design System**. No shadows, no gradients. Pure geometric shapes, high-contrast typography (Outfit), and bold color blocking for maximum analytical clarity.
+*   **Interactive Visualizations**: Integrated Chart.js for real-time Support vs. Confidence scatter plots and Lift Score horizontal bar charts.
+*   **Dynamic Data Grid**: Filter bundles by size, sort by Support/Confidence/Lift, and Export directly to CSV.
 
-## Learning Laravel
+## 🛠 Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+*   **Backend**: Laravel 11.x (PHP 8.5)
+*   **Machine Learning Engine**: Python (Native Apriori Fallback via `itertools` & `pandas`)
+*   **Database**: SQLite
+*   **Frontend**: Tailwind CSS (via CDN) & Chart.js
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🎨 Design System: Flat UI
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+This dashboard rejects the artificial depth of modern web design. 
+- **Typography**: Uses **Outfit** (extrabold for headings, medium for data).
+- **Color Palette**: Pure White backgrounds against Gray 900 text, punctuated by solid primary blocks of Blue 500 (`#3B82F6`), Emerald 500 (`#10B981`), and Amber 500 (`#F59E0B`).
+- **Hierarchy**: Defined entirely by scale, color contrast, and rigid grids. Absolute zero drop shadows (`shadow-none`).
 
-## Agentic Development
+## ⚙️ Installation & Setup
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/adiityaastr/tugas-besar-analitik.git
+   cd tugas_besar_analitik/beauty-dashboard
+   ```
 
-```bash
-composer require laravel/boost --dev
+2. **Install Dependencies**
+   ```bash
+   composer install
+   ```
 
-php artisan boost:install
-```
+3. **Environment Setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   Ensure `.env` points to a valid SQLite database:
+   ```env
+   DB_CONNECTION=sqlite
+   ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+4. **Python Configuration**
+   Ensure Python 3.x is installed on your system. The Laravel controller (`AnalyticsController.php`) triggers the analysis script located at `scripts/apriori_analysis.py`.
+   *Note: Ensure your `python` command is globally accessible, or update the path in the controller.*
 
-## Contributing
+5. **Run the Application**
+   ```bash
+   php artisan serve
+   ```
+   Navigate to `http://127.0.0.1:8000/analytics/apriori`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📊 Data Processing
 
-## Code of Conduct
+The Python backend parses `transactions.csv`, groups items by `customer_id`, and runs a frequent itemset generation algorithm based on a strict `min_support` threshold (e.g., `0.5%`). The output is serialized into `association_rules.csv` and seamlessly ingested by the Laravel frontend.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+*Crafted with precision for data-driven decisions.*
