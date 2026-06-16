@@ -1,0 +1,163 @@
+Free Technical Test — Beauty Marketplace Sales Analysis
+
+Selamat datang di technical test simulasi Data Analyst untuk perusahaan beauty & cosmetic yang menjual produk melalui berbagai channel digital dan offline.
+Dataset ini merepresentasikan aktivitas penjualan brand makeup melalui:
+TikTok Shop
+Shopee
+Website resmi
+Offline Store
+
+Tujuan utama dari test ini adalah melihat:
+kemampuan analisis bisnis
+kemampuan data cleaning & modeling
+kemampuan visualisasi dashboard
+kemampuan menghasilkan insight yang actionable
+
+Dataset terdiri dari 2 tabel utama:
+transactions, link https://docs.google.com/spreadsheets/d/1c3Mc_YMV_BsCA4x4HIme7WI8pxNFFizLsLErYik1Cqg/edit?usp=sharing
+product_code, link https://docs.google.com/spreadsheets/d/1opdVfs3z5Kl48Kn6LDC7iq6IQso_Ri3wF-mAEecv9HA/edit?usp=sharing
+
+
+product_code table
+Description: Tabel master produk yang berisi informasi detail setiap produk makeup.
+Primary key:
+product_code
+Granularity: 1 row 1 unique product
+
+Important Columns:
+Column	Description
+product_code	Kode unik produk
+product_name	Nama produk
+category	Kategori produk
+shade	Shade/warna produk
+production_cost	Biaya produksi
+selling_price	Harga jual
+stock_qty	Total stok
+rating_average	Rating rata-rata
+review_count	Jumlah review
+
+
+transactions
+Description: Tabel transaksi penjualan dari seluruh marketplace dan offline store.
+Foreign key: prodyct_code
+Granularity: 1 row 1 transaction
+
+Important Columns
+Column	Description
+transaction_id	ID transaksi
+transaction_date	Tanggal transaksi
+platform	Marketplace/platform penjualan
+quantity	Jumlah produk dibeli
+gross_sales	Penjualan kotor
+discount_amount	Total diskon
+net_sales	Penjualan bersih
+platform_fee	Fee marketplace
+campaign_name	Nama campaign
+delivery_status	Status pengiriman
+customer_rating	Rating customer
+returned_flag	Penanda retur
+
+
+Relationship
+Gunakan relationship berikut:
+
+dim_products.product_code
+        ↓
+fact_sales_transactions.product_code
+
+Relationship type: One-to-Many
+Recommended:
+Cross filter direction: Single
+Build star schema
+Buat calendar/date table tambahan
+
+Your Mission
+Peserta wajib mengumpulkan hasil:
+cleaning data
+database
+visualitation
+Peserta bebas menggunakan beberapa tools:
+Power BI (one of vizualitation)
+Looker Studio (one of vizualitation)
+SQL (database and cleaning)
+Python (cleaning)
+Spreadsheet (cleaning)
+
+Namun fokus utama ada pada:
+business insight
+dashboard storytelling
+analytical thinking
+
+
+Mandatory Tasks
+Data Understanding
+Lakukan eksplorasi dataset:
+pahami struktur tabel
+identifikasi relationship
+pahami business process
+2. Data Cleaning
+Peserta diperbolehkan:
+handling missing values
+handling duplicate
+data transformation
+membuat calculated column/measure
+3. Dashboard Creation
+Buat dashboard yang mencakup minimal:
+Sales Performance
+total sales
+total transaction
+total quantity sold
+sales trend
+Marketplace Performance
+Perbandingan:
+Shopee
+TikTok Shop
+Website
+Offline Store
+Product Performance
+best selling product
+best category
+low performing product
+Customer Insight
+age distribution
+membership tier
+customer rating
+Operational Insight
+return rate
+cancelled transaction
+delivery performance
+
+Business Insight Requirement
+Ini bagian TERPENTING.
+Peserta wajib memberikan insight bisnis, bukan hanya visualisasi.
+Contoh:
+Mengapa TikTok Shop memiliki sales tinggi tetapi margin rendah?
+2. Produk apa yang paling sering diretur?
+3. Campaign mana yang paling efektif?
+4. Apakah diskon besar meningkatkan repeat transaction?
+5. Platform mana yang memiliki customer rating terbaik?
+6. Produk mana yang perlu restock lebih cepat?
+
+Insight Notes
+Peserta wajib membuat file insight/report berisi:
+temuan utama
+insight bisnis
+rekomendasi
+peluang improvement
+Format bebas:
+PDF
+PPT
+README.md
+DOCX
+
+Submission Guideline — Beauty Marketplace Sales Analysis
+Seluruh hasil pengerjaan dikumpulkan dalam format ZIP dengan format judul: Username LinkedIn. exm: niaaaftr
+
+Mandatory Submission Contents
+Peserta wajib mengumpulkan:
+Requirement	Format
+Dashboard	.pbix / Looker Studio link di notes insight business
+SQL Query	.sql
+Python Script	.py
+Business Insight Notes	.pdf / .pptx / .md
+README Documentation	README.md
