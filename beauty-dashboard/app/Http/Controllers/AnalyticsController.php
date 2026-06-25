@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
@@ -22,12 +23,12 @@ class AnalyticsController extends Controller
 
         // Check if rules CSV file exists on disk
         if (file_exists($path)) {
-            if (($handle = fopen($path, "r")) !== FALSE) {
-                // Get header
-                $header = fgetcsv($handle, 1000, ",");
-                
+            if (($handle = fopen($path, 'r')) !== false) {
+                // Get header (0 = no length limit)
+                $header = fgetcsv($handle, 0, ',');
+
                 // Read rows
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                while (($data = fgetcsv($handle, 0, ',')) !== false) {
                     if (count($data) >= 5) {
                         $rules[] = [
                             'antecedent' => $data[0],
@@ -93,7 +94,8 @@ class AnalyticsController extends Controller
         $scriptPath = base_path('scripts/apriori_analysis.py');
         
         // Detect absolute python path or fall back to standard PATH command
-        $pythonCommand = 'C:\\Users\\rizal\\AppData\\Local\\Programs\\Python\\Python314\\python.exe';
+        // Use env variable PYTHON_PATH or fall back to system `python`
+        $pythonCommand = env('PYTHON_PATH', 'python');
         
         Log::info("Running Apriori Python script: {$pythonCommand} {$scriptPath}");
         
