@@ -194,7 +194,6 @@
                                             <small class="text-muted fw-bold text-uppercase d-block mb-1">Bundle With</small>
                                             <div class="bg-primary text-white rounded p-3 d-flex justify-content-between align-items-center fw-bold">
                                                 {{ $bundle['bundle_with'] }}
-                                                <i class="bi bi-arrow-right"></i>
                                             </div>
                                         </div>
 

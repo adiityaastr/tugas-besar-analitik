@@ -93,10 +93,7 @@ class AnalyticsController extends Controller
         $scriptPath = base_path('scripts/apriori_analysis.py');
         
         // Detect absolute python path or fall back to standard PATH command
-        $pythonCommand = 'python';
-        if (file_exists('C:\\Python314\\python.exe')) {
-            $pythonCommand = 'C:\\Python314\\python.exe';
-        }
+        $pythonCommand = 'C:\\Users\\rizal\\AppData\\Local\\Programs\\Python\\Python314\\python.exe';
         
         Log::info("Running Apriori Python script: {$pythonCommand} {$scriptPath}");
         

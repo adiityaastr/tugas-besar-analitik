@@ -5,8 +5,8 @@ import os
 # Get directory paths relative to this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 base_dir = os.path.dirname(script_dir)  # E:\tugas_besar_analitik\beauty-dashboard
-products_path = os.path.join(base_dir, 'storage', 'app', 'product_code.csv')
-transactions_path = os.path.join(base_dir, 'storage', 'app', 'transactions.csv')
+products_path = os.path.join(base_dir, 'storage', 'app', 'product_code - Sheet1.csv')
+transactions_path = os.path.join(base_dir, 'storage', 'app', 'transactions - Sheet1.csv')
 output_path = os.path.join(base_dir, 'storage', 'app', 'association_rules.csv')
 
 # Load datasets
