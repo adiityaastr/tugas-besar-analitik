@@ -3,8 +3,8 @@ import sys
 
 # Load datasets
 try:
-    products_df = pd.read_csv(r'E:\tugas_besar_analitik\product_code - Sheet1.csv')
-    transactions_df = pd.read_csv(r'E:\tugas_besar_analitik\transactions - Sheet1.csv')
+    products_df = pd.read_csv(r'product_code - Sheet1.csv')
+    transactions_df = pd.read_csv(r'transactions - Sheet1.csv')
 except Exception as e:
     print(f"Error loading CSV files: {e}")
     sys.exit(1)
@@ -70,8 +70,8 @@ try:
             print(rules_display.head(20).to_string(index=False))
             
             # Save results to CSV
-            rules_display.to_csv(r'E:\tugas_besar_analitik\association_rules.csv', index=False)
-            print("\nRules saved to E:\\tugas_besar_analitik\\association_rules.csv")
+            rules_display.to_csv(r'association_rules.csv', index=False)
+            print("\nRules saved to association_rules.csv")
 
 except ImportError:
     print(f"\nmlxtend library is not installed. Let's implement native Python Apriori with min_support={min_support}...")
@@ -146,5 +146,5 @@ except ImportError:
         print(rules_df.head(20).to_string(index=False))
         
         # Save to CSV
-        rules_df.to_csv(r'E:\tugas_besar_analitik\association_rules.csv', index=False)
-        print("\nRules saved to E:\\tugas_besar_analitik\\association_rules.csv")
+        rules_df.to_csv(r'association_rules.csv', index=False)
+        print("\nRules saved to association_rules.csv")
