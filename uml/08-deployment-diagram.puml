@@ -1,0 +1,57 @@
+@startuml AuraBeauty_Diagram_Deployment
+
+skinparam backgroundColor #FEFEFE
+skinparam node {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+}
+skinparam component {
+    BackgroundColor #FFF3E0
+    BorderColor #E65100
+}
+skinparam artifact {
+    BackgroundColor #E8F5E9
+    BorderColor #2E7D32
+}
+
+title AuraBeauty BI - Diagram Deployment
+
+node "Stasiun Kerja Pengguna" as Workstation {
+    [Browser Web] as Browser
+}
+
+node "Server Web" as WebServer {
+    package "Aplikasi Laravel 11.x" {
+        [PHP 8.x FPM] as PHP
+        [AnalyticsController] as Controller
+        [Tampilan Blade] as Views
+    }
+
+    package "Runtime Python" {
+        [Python 3.x] as Python
+        [apriori_analysis.py] as Script
+        [mlxtend / pandas] as Libs
+    }
+
+    database "SQLite" as SQLite {
+        [tabel users]
+        [tabel sessions]
+    }
+
+    artifact "product_code Sheet1.csv" as ProductsCSV
+    artifact "transactions Sheet1.csv" as TransactionsCSV
+    artifact "association_rules.csv" as RulesCSV
+}
+
+Workstation --> WebServer : HTTPS / HTTP
+Browser --> PHP : permintaan
+PHP --> Python : Process::run()
+Python --> ProductsCSV : baca
+Python --> TransactionsCSV : baca
+Python --> RulesCSV : tulis
+PHP --> RulesCSV : baca
+PHP --> SQLite : query
+PHP --> Views : render
+Views --> Browser : respons
+
+@enduml

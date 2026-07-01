@@ -1,0 +1,65 @@
+@startuml AuraBeauty_Diagram_Kasus_Penggunaan
+
+!define RECTANGLE class
+
+skinparam backgroundColor #FEFEFE
+skinparam usecase {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+    ArrowColor #1565C0
+}
+skinparam actor {
+    BackgroundColor #FFF3E0
+    BorderColor #E65100
+}
+skinparam rectangle {
+    BackgroundColor #F5F5F5
+    BorderColor #424242
+}
+
+title AuraBeauty BI - Diagram Kasus Penggunaan\nAnalisis Keranjang Belanja & Manajemen Overstock
+
+left to right direction
+
+actor "Analis Data / Pengguna" as User
+actor "Administrator Sistem" as Admin
+
+rectangle "AuraBeauty BI Console" {
+    usecase "Melihat Dashboard Apriori" as UC_View
+    usecase "Menjalankan Analisis Apriori" as UC_Run
+    usecase "Menyaring Aturan Asosiasi" as UC_Filter
+    usecase "Mengekspor Aturan ke CSV" as UC_Export
+    usecase "Melihat Rekomendasi Overstock" as UC_Overstock
+    usecase "Melihat Grafik Support vs Confidence" as UC_Charts
+    usecase "Mengatur Jalur Mesin Python" as UC_PythonPath
+    usecase "Mengonfigurasi Ambang Batas Overstock" as UC_Threshold
+
+    User --> UC_View
+    User --> UC_Run
+    User --> UC_Filter
+    User --> UC_Export
+    User --> UC_Overstock
+    User --> UC_Charts
+
+    Admin --> UC_PythonPath
+    Admin --> UC_Threshold
+
+    UC_View ..> UC_Overstock : <<include>>
+    UC_View ..> UC_Charts : <<include>>
+    UC_Run ..> UC_View : <<include>>
+}
+
+note right of UC_Run
+  Pengguna menekan tombol "Run Analysis";
+  Laravel mengeksekusi skrip Python Apriori
+  dan meregenerasi association_rules.csv
+end note
+
+note bottom of UC_Overstock
+  Sistem membandingkan aturan asosiasi
+  dengan inventori overstock yang telah
+  ditentukan untuk menyarankan bundel
+  pengosongan gudang
+end note
+
+@enduml

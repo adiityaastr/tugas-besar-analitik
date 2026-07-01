@@ -1,0 +1,37 @@
+@startuml AuraBeauty_Diagram_State_Pekerjaan_Apriori
+
+skinparam backgroundColor #FEFEFE
+skinparam state {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+    ArrowColor #424242
+}
+
+title AuraBeauty BI - Diagram State\nPekerjaan Analisis Apriori
+
+[*] --> Idle
+
+Idle --> Running : Pengguna klik Run Analysis
+
+Running --> MemuatData : Laravel menjalankan proses Python
+
+MemuatData --> Memproses : CSV diparse & keranjang dibangun
+
+Memproses --> MenghasilkanAturan : Algoritma Apriori dieksekusi
+
+MenghasilkanAturan --> MenyimpanHasil : Aturan diurutkan & dipetakan
+
+MenyimpanHasil --> Sukses : CSV tersimpan
+Sukses --> Idle : Redirect dengan pesan sukses
+
+MenyimpanHasil --> Error : Gagal menulis file / aturan kosong
+Memproses --> Error : Error mlxtend / data tidak valid
+MemuatData --> Error : CSV tidak ditemukan
+
+Error --> Idle : Redirect dengan pesan error
+Error --> Running : Ulangi analisis
+
+Sukses --> [*]
+Error --> [*]
+
+@enduml

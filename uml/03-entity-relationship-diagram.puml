@@ -1,0 +1,132 @@
+@startuml AuraBeauty_ERD
+
+!define table class
+
+skinparam backgroundColor #FEFEFE
+skinparam class {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+    ArrowColor #1565C0
+}
+
+title AuraBeauty BI - Diagram Relasi Entitas\nKonsep Star Schema
+
+entity "dim_products" as dim_products {
+    * product_code : VARCHAR <<PK>>
+    --
+    product_name : VARCHAR
+    category : VARCHAR
+    sub_category : VARCHAR
+    shade : VARCHAR
+    finish_type : VARCHAR
+    skin_type_target : VARCHAR
+    size_ml : INT
+    launch_year : INT
+    product_status : VARCHAR
+    production_cost : DECIMAL
+    selling_price : DECIMAL
+    brand : VARCHAR
+    local_or_import : VARCHAR
+    halal_certified : VARCHAR
+    vegan_product : VARCHAR
+    bpom_registered : VARCHAR
+    supplier_name : VARCHAR
+    warehouse_location : VARCHAR
+    stock_qty : INT
+    reorder_point : INT
+    rating_average : DECIMAL
+    review_count : INT
+}
+
+entity "fact_sales_transactions" as fact_sales {
+    * transaction_id : VARCHAR <<PK>>
+    --
+    transaction_date : DATE
+    order_time : TIME
+    platform : VARCHAR
+    order_source : VARCHAR
+    customer_id : VARCHAR
+    customer_name : VARCHAR
+    customer_gender : VARCHAR
+    customer_age : INT
+    city : VARCHAR
+    province : VARCHAR
+    membership_tier : VARCHAR
+    * product_code : VARCHAR <<FK>>
+    quantity : INT
+    gross_sales : DECIMAL
+    discount_amount : DECIMAL
+    net_sales : DECIMAL
+    shipping_cost : DECIMAL
+    platform_fee : DECIMAL
+    payment_method : VARCHAR
+    voucher_used : VARCHAR
+    campaign_name : VARCHAR
+    warehouse_origin : VARCHAR
+    delivery_status : VARCHAR
+    delivery_days : INT
+    customer_rating : INT
+    returned_flag : VARCHAR
+    return_reason : VARCHAR
+    sales_channel_type : VARCHAR
+    cashier_or_host : VARCHAR
+}
+
+entity "dim_customers" as dim_customers {
+    * customer_id : VARCHAR <<PK>>
+    --
+    customer_name : VARCHAR
+    customer_gender : VARCHAR
+    customer_age : INT
+    city : VARCHAR
+    province : VARCHAR
+    membership_tier : VARCHAR
+}
+
+entity "dim_date" as dim_date {
+    * date_key : DATE <<PK>>
+    --
+    day : INT
+    month : INT
+    year : INT
+    quarter : INT
+    day_of_week : VARCHAR
+    is_weekend : BOOLEAN
+}
+
+entity "association_rules" as assoc_rules {
+    * rule_id : INT <<PK>>
+    --
+    antecedents_name : VARCHAR
+    consequents_name : VARCHAR
+    support : DECIMAL
+    confidence : DECIMAL
+    lift : DECIMAL
+    generated_at : TIMESTAMP
+}
+
+entity "overstock_items" as overstock {
+    * item_name : VARCHAR <<PK>>
+    --
+    days_left : INT
+    stock : INT
+    identified_at : TIMESTAMP
+}
+
+dim_products ||--o{ fact_sales : "1 ke Banyak"
+dim_customers ||--o{ fact_sales : "1 ke Banyak"
+dim_date ||--o{ fact_sales : "1 ke Banyak"
+
+note right of assoc_rules
+    Output yang dihasilkan oleh mesin Python Apriori.
+    Saat ini tidak disimpan ke database;
+    disimpan sebagai association_rules.csv.
+end note
+
+note bottom of overstock
+    Inventori overstock hard-coded di AnalyticsController.
+    Untuk produksi sebaiknya bersumber dari
+    dim_products.stock_qty dan reorder_point.
+end note
+
+@enduml

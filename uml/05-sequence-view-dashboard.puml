@@ -1,0 +1,49 @@
+@startuml AuraBeauty_Sequence_Melihat_Dashboard
+
+skinparam backgroundColor #FEFEFE
+skinparam sequence {
+    ArrowColor #424242
+    ActorBorderColor #E65100
+    ParticipantBorderColor #1565C0
+    ParticipantBackgroundColor #E3F2FD
+    LifeLineBorderColor #90A4AE
+    LifeLineBackgroundColor #ECEFF1
+}
+
+title AuraBeauty BI - Diagram Sekuen\nMelihat Dashboard Apriori
+
+actor "Analis Data" as User
+participant "Browser" as Browser
+participant "Laravel\nRouter" as Router
+participant "Analytics\nController" as Controller
+participant "Storage\nDisk" as Storage
+participant "Tampilan\napriori.blade.php" as View
+
+User -> Browser : GET /analytics/apriori
+Browser -> Router : GET /analytics/apriori
+Router -> Controller : index()
+
+Controller -> Storage : file_exists(association_rules.csv)
+Storage --> Controller : true/false
+
+alt berkas tersedia
+    Controller -> Storage : fopen(association_rules.csv)
+    Storage --> Controller : Baris CSV
+    Controller -> Controller : Parse baris ke rules[]
+    Controller -> Controller : Bangun bundel overstock
+    Controller -> Controller : Urutkan bundel berdasarkan lift
+else berkas tidak ada
+    Controller -> Controller : rules = []
+    Controller -> Controller : overstockBundles = []
+end
+
+Controller -> View : return view(rules, overstockBundles, total_rules, has_data)
+View -> View : Render kartu KPI
+View -> View : Render grafik (Chart.js)
+View -> View : Render kartu overstock
+View -> View : Render tabel aturan + filter
+View --> Browser : HTML + JS
+Browser -> Browser : Inisialisasi Chart.js (bar & scatter)
+Browser -> User : Tampilkan dashboard
+
+@enduml

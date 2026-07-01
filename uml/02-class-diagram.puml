@@ -1,0 +1,134 @@
+@startuml AuraBeauty_Diagram_Kelas
+
+skinparam backgroundColor #FEFEFE
+skinparam class {
+    BackgroundColor #E8F5E9
+    BorderColor #2E7D32
+    ArrowColor #424242
+}
+skinparam package {
+    BackgroundColor #F5F5F5
+    BorderColor #424242
+}
+
+title AuraBeauty BI - Diagram Kelas\nArsitektur Laravel + Python
+
+package "Aplikasi Laravel" #E3F2FD {
+    class Controller <<abstract>> {
+        +middleware: array
+    }
+
+    class AnalyticsController {
+        +index(): View
+        +runAnalysis(): RedirectResponse
+        -buildOverstockBundles(rules: array): array
+        -readAssociationRules(path: string): array
+    }
+
+    class User {
+        +id: bigint
+        +name: string
+        +email: string
+        +password: string
+    }
+
+    class Rule {
+        +antecedent: string
+        +consequent: string
+        +support: float
+        +confidence: float
+        +lift: float
+    }
+
+    class OverstockBundle {
+        +overstock_item: string
+        +days_left: int
+        +stock: int
+        +bundle_with: string
+        +support: float
+        +confidence: float
+        +lift: float
+        +recommendation: string
+    }
+}
+
+package "Mesin Analitik Python" #FFF3E0 {
+    class AprioriAnalysis <<script>> {
+        +products_df: DataFrame
+        +transactions_df: DataFrame
+        +customer_baskets: DataFrame
+        +min_support: float
+        +min_confidence: float
+        +loadDatasets()
+        +cleanData()
+        +buildCustomerBaskets()
+        +runMlxtendApriori(): DataFrame
+        +runNativeAprioriFallback(): DataFrame
+        +saveRules(path: string)
+    }
+
+    class FrequentItemset {
+        +items: frozenset
+        +support: float
+    }
+
+    class AssociationRule {
+        +antecedents: frozenset
+        +consequents: frozenset
+        +support: float
+        +confidence: float
+        +lift: float
+    }
+}
+
+package "Sumber Data" #FCE4EC {
+    class ProductData <<CSV>> {
+        +product_code: string
+        +product_name: string
+        +category: string
+        +shade: string
+        +production_cost: float
+        +selling_price: float
+        +stock_qty: int
+        +rating_average: float
+        +review_count: int
+    }
+
+    class TransactionData <<CSV>> {
+        +transaction_id: string
+        +transaction_date: date
+        +platform: string
+        +customer_id: string
+        +product_code: string
+        +quantity: int
+        +gross_sales: float
+        +discount_amount: float
+        +net_sales: float
+        +delivery_status: string
+        +returned_flag: string
+    }
+
+    class AssociationRulesCSV <<CSV>> {
+        +antecedents_name: string
+        +consequents_name: string
+        +support: float
+        +confidence: float
+        +lift: float
+    }
+}
+
+Controller <|-- AnalyticsController : extends
+AnalyticsController ..> Rule : creates
+AnalyticsController ..> OverstockBundle : creates
+AnalyticsController ..> AssociationRulesCSV : reads
+AnalyticsController ..> AprioriAnalysis : executes via Process
+
+AprioriAnalysis ..> ProductData : reads
+AprioriAnalysis ..> TransactionData : reads
+AprioriAnalysis ..> AssociationRulesCSV : writes
+AprioriAnalysis ..> FrequentItemset : generates
+AprioriAnalysis ..> AssociationRule : generates
+
+TransactionData "0..*" -- "1" ProductData : references >
+
+@enduml

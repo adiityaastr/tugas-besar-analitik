@@ -1,0 +1,58 @@
+@startuml AuraBeauty_Diagram_Komponen
+
+skinparam backgroundColor #FEFEFE
+skinparam component {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+    ArrowColor #424242
+}
+skinparam package {
+    BackgroundColor #F5F5F5
+    BorderColor #424242
+}
+
+title AuraBeauty BI - Diagram Komponen
+
+package "Lapisan Klien" {
+    [Browser Web] as Browser
+    [Chart.js CDN] as ChartJS
+}
+
+package "Lapisan Aplikasi" {
+    [Laravel 11.x] as Laravel
+    [AnalyticsController] as Controller
+    [Routes] as Routes
+    [Tampilan Blade\napriori.blade.php] as View
+}
+
+package "Mesin Analitik" {
+    [Python 3.x Runtime] as Python
+    [apriori_analysis.py] as Script
+    [Pustaka mlxtend] as Mlxtend
+    [Fallback Native] as Native
+}
+
+package "Lapisan Data" {
+    [Database SQLite] as SQLite
+    [product_code Sheet1.csv] as ProductsCSV
+    [transactions Sheet1.csv] as TransactionsCSV
+    [association_rules.csv] as RulesCSV
+}
+
+Browser --> Routes : HTTP GET / POST
+Routes --> Controller : dispatch
+Controller --> View : render
+View --> Browser : HTML + JS
+Browser --> ChartJS : muat grafik
+
+Controller --> Script : Process::run()
+Script --> ProductsCSV : baca
+Script --> TransactionsCSV : baca
+Script --> Mlxtend : gunakan (opsional)
+Script --> Native : fallback
+Script --> RulesCSV : tulis
+
+Controller --> RulesCSV : baca
+Laravel --> SQLite : session/auth (default)
+
+@enduml

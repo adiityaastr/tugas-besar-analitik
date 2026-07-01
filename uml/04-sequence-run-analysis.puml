@@ -1,0 +1,61 @@
+@startuml AuraBeauty_Sequence_Menjalankan_Analisis
+
+skinparam backgroundColor #FEFEFE
+skinparam sequence {
+    ArrowColor #424242
+    ActorBorderColor #E65100
+    ParticipantBorderColor #1565C0
+    ParticipantBackgroundColor #E3F2FD
+    LifeLineBorderColor #90A4AE
+    LifeLineBackgroundColor #ECEFF1
+}
+
+title AuraBeauty BI - Diagram Sekuen\nMenjalankan Analisis Apriori
+
+actor "Analis Data" as User
+participant "Browser" as Browser
+participant "Laravel\nRouter" as Router
+participant "Analytics\nController" as Controller
+participant "Process\nFacade" as Process
+participant "Skrip\nPython Apriori" as Python
+participant "Berkas CSV\n(produk & transaksi)" as CSV
+participant "association_rules.csv" as RulesCSV
+
+User -> Browser : Klik tombol "Run Analysis"
+Browser -> Router : POST /analytics/apriori/run
+Router -> Controller : runAnalysis()
+
+Controller -> Controller : Menentukan jalur skrip
+Controller -> Controller : Mendeteksi eksekusi python
+
+Controller -> Process : run("python scripts/apriori_analysis.py")
+Process -> Python : Eksekusi skrip
+
+Python -> CSV : Baca product_code Sheet1.csv
+Python -> CSV : Baca transactions Sheet1.csv
+Python -> Python : Bersihkan spasi
+Python -> Python : Pemetaan product_code → product_name
+Python -> Python : Kelompokkan berdasarkan customer_id
+Python -> Python : Saring pelanggan dengan >1 item
+
+alt mlxtend terinstal
+    Python -> Python : TransactionEncoder.fit_transform()
+    Python -> Python : apriori(min_support=0.015)
+    Python -> Python : association_rules(metric=confidence)
+else mlxtend tidak terinstal
+    Python -> Python : Hitung 1-itemset
+    Python -> Python : Hitung 2-itemset
+    Python -> Python : Hasilkan aturan confidence & lift
+end
+
+Python -> Python : Urutkan aturan berdasarkan lift, confidence
+Python -> RulesCSV : Tulis association_rules.csv
+Python --> Process : Kembalikan kode keluar 0 + stdout
+Process --> Controller : successful()
+
+Controller -> Controller : Catat log sukses
+Controller -> Router : Redirect /analytics/apriori
+Router -> Browser : 302 + pesan sukses
+Browser -> User : Tampilkan pesan sukses
+
+@enduml

@@ -1,0 +1,54 @@
+@startuml AuraBeauty_Aktivitas_Analisis_Apriori
+
+skinparam backgroundColor #FEFEFE
+skinparam activity {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+    ArrowColor #424242
+    StartColor #2E7D32
+    EndColor #C62828
+}
+
+title AuraBeauty BI - Diagram Aktivitas\nPipeline Analisis Apriori
+
+start
+
+:Pengguna menekan "Run Analysis";
+:Laravel memanggil skrip Python;
+
+:Muat product_code Sheet1.csv;
+:Muat transactions Sheet1.csv;
+
+:Bersihkan nama kolom & kode produk;
+:Peta product_code ke product_name;
+
+:Kelompokkan transaksi berdasarkan customer_id;
+:Saring pelanggan dengan > 1 produk;
+
+if (mlxtend terinstal?) then (ya)
+    :Encode keranjang dengan TransactionEncoder;
+    :Jalankan algoritma Apriori (min_support=1,5%);
+    :Hasilkan association_rules
+    (metric=confidence, min_threshold=10%);
+else (tidak)
+    :Hitung 1-itemset yang sering;
+    :Hitung 2-itemset yang sering;
+    :Hasilkan aturan berarah;
+    :Hitung confidence & lift;
+endif
+
+:Urutkan aturan berdasarkan lift, confidence;
+:Peta antecedent/consequent ke nama produk;
+:Tulis association_rules.csv;
+
+if (Keluar Python sukses?) then (ya)
+    :Catat log sukses;
+    :Redirect dengan pesan sukses;
+else (tidak)
+    :Catat log error;
+    :Redirect dengan pesan error;
+endif
+
+stop
+
+@enduml
