@@ -12,7 +12,7 @@
         <div class="kpi-card purple">
             <div class="kpi-icon purple"><i class="bi bi-currency-dollar"></i></div>
             <div class="kpi-label">Net Sales</div>
-            <div class="kpi-value">{{ 'Rp ' . number_format($metrics['total_net_sales'] / 1e9, 1) . 'B' }}</div>
+            <div class="kpi-value">{{ 'Rp ' . number_format($metrics['total_net_sales'] / 1e9, 1) . 'M' }}</div>
             <div class="kpi-sub">Total pendapatan bersih</div>
         </div>
     </div>
@@ -44,7 +44,7 @@
         <div class="kpi-card pink">
             <div class="kpi-icon pink"><i class="bi bi-tag"></i></div>
             <div class="kpi-label">Total Diskon</div>
-            <div class="kpi-value">{{ 'Rp ' . number_format($metrics['total_discount'] / 1e9, 1) . 'B' }}</div>
+            <div class="kpi-value">{{ 'Rp ' . number_format($metrics['total_discount'] / 1e9, 1) . 'M' }}</div>
             <div class="kpi-sub">{{ number_format(($metrics['total_discount'] / max($metrics['total_gross_sales'], 1)) * 100, 1) }}% dari gross</div>
         </div>
     </div>
@@ -192,7 +192,7 @@ new Chart(document.getElementById('trendChart'), {
         scales: {
             y: {
                 ticks: {
-                    callback: v => 'Rp ' + (v / 1e9).toFixed(1) + 'B'
+                    callback: v => 'Rp ' + (v / 1e9).toFixed(1) + 'M'
                 }
             }
         }

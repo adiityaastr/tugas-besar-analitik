@@ -449,7 +449,7 @@
                 <p class="topbar-subtitle">@yield('page-subtitle', 'AuraBeauty Business Intelligence')</p>
             </div>
         </div>
-        <div class="topbar-badge">Live Data</div>
+
     </header>
 
     <!-- Alerts -->
