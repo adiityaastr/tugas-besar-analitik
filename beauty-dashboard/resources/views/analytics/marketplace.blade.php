@@ -148,7 +148,7 @@ new Chart(document.getElementById('platNetChart'), {
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-            y: { ticks: { callback: v => 'Rp ' + (v / 1e9).toFixed(1) + 'B' } }
+            y: { ticks: { callback: v => 'Rp ' + (v / 1e9).toFixed(1) + 'M' } }
         }
     }
 });
@@ -206,7 +206,7 @@ new Chart(document.getElementById('feeNetChart'), {
         plugins: { legend: { position: 'top', align: 'end' } },
         scales: {
             x: { stacked: true },
-            y: { stacked: true, ticks: { callback: v => 'Rp ' + (v / 1e9).toFixed(1) + 'B' } }
+            y: { stacked: true, ticks: { callback: v => 'Rp ' + (v / 1e9).toFixed(1) + 'M' } }
         }
     }
 });
